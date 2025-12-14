@@ -14,6 +14,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "SIGN_UP_CLIENT_ID", properties["SIGN_UP_CLIENT_ID"] as String)
+        buildConfigField("String", "SIGN_UP_CLIENT_SECRET", properties["SIGN_UP_CLIENT_SECRET"] as String)
+        buildConfigField("String", "SIGN_UP_TOKEN_ENDPOINT", properties["SIGN_UP_TOKEN_ENDPOINT"] as String)
+        buildConfigField("String", "SIGN_UP_ENDPOINT", properties["SIGN_UP_ENDPOINT"] as String)
+        buildConfigField("String", "SIGN_UP_O_AUTH_TYPE_KEY", properties["SIGN_UP_O_AUTH_TYPE_KEY"] as String)
+        buildConfigField("String", "SIGN_UP_O_AUTH_TYPE_VALUE", properties["SIGN_UP_O_AUTH_TYPE_VALUE"] as String)
     }
 
     buildTypes {
