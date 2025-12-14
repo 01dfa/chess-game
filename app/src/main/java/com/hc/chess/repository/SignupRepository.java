@@ -4,17 +4,18 @@ import com.hc.chess.datasource.Result;
 import com.hc.chess.datasource.SignupDataSource;
 import com.hc.chess.model.SignupUser;
 
-public class SignUpRepository {
-    private static volatile SignUpRepository instance;
+public class SignupRepository {
+    private static volatile SignupRepository instance;
     private SignupDataSource dataSource;
-    private SignUpRepository(SignupDataSource dataSource) {
+    private SignupRepository(SignupDataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public static SignUpRepository getInstance(SignupDataSource dataSource) {
+    public static SignupRepository getInstance(SignupDataSource dataSource) {
         if (instance == null) {
-            instance = new SignUpRepository(dataSource);
+            instance = new SignupRepository(dataSource);
         }
+
         return instance;
     }
 

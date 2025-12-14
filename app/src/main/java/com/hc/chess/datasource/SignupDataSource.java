@@ -2,14 +2,14 @@ package com.hc.chess.datasource;
 
 import com.hc.chess.AuthorizationHeaderType;
 import com.hc.chess.ContentType;
-import com.hc.chess.model.SignUpUser;
+import com.hc.chess.model.SignupUser;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Map;
 
-public class SignUpDataSource {
+public class SignupDataSource {
     private final String clientId;
     private final String clientSecret;
     private final String credentials;
@@ -17,7 +17,7 @@ public class SignUpDataSource {
     private final String signUpEndpoint;
     private final String oauthTypeKey;
     private final String oauthTypeValue;
-    private SignUpDataSource(Builder builder) {
+    private SignupDataSource(Builder builder) {
         this.clientId = builder.clientId;
         this.clientSecret = builder.clientSecret;
         this.credentials = this.clientId+":"+this.clientSecret;
@@ -65,12 +65,12 @@ public class SignUpDataSource {
             return this;
         }
 
-        public SignUpDataSource build() {
-            return new SignUpDataSource(this);
+        public SignupDataSource build() {
+            return new SignupDataSource(this);
         }
     }
 
-    public Result<SignUpUser> register(String email, String password) {
+    public Result<SignupUser> register(String email, String password) {
         try {
             String response = HttpRequest.post(this.tokenEndpoint,
                     AuthorizationHeaderType.BASIC,
@@ -92,7 +92,7 @@ public class SignUpDataSource {
 
             JSONObject jsonPlayerResult = new JSONObject(playerResult);
 
-            SignUpUser result = new SignUpUser(jsonPlayerResult.getString("email"));
+            SignupUser result = new SignupUser(jsonPlayerResult.getString("email"));
 
             return new Result.Success<>(result);
         } catch (Exception e) {
