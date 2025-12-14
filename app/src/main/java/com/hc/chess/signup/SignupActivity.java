@@ -11,49 +11,40 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.hc.chess.R;
 
 import com.hc.chess.databinding.ActivitySignUpBinding;
+import com.hc.chess.model.SignupResult;
+import com.hc.chess.model.SignupUser;
 
-public class SignUpActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
-    private SignUpViewModel signupViewModel;
+    private SignupViewModel signupViewModel;
     private ActivitySignUpBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_sign_up);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        signupViewModel = new ViewModelProvider(this, new SignUpViewModelFactory())
-                .get(SignUpViewModel.class);
+        signupViewModel = new ViewModelProvider(this, new SignupViewModelFactory())
+                .get(SignupViewModel.class);
 
         final EditText emailEditText = binding.email;
         final EditText passwordEditText = binding.password;
         final Button registerButton = binding.register;
         final ProgressBar loadingProgressBar = binding.loading;
 
-        signupViewModel.getSignupFormState().observe(this, new Observer<SignUpFormState>() {
+        signupViewModel.getSignupFormState().observe(this, new Observer<SignupFormState>() {
             @Override
-            public void onChanged(@Nullable SignUpFormState formState) {
+            public void onChanged(@Nullable SignupFormState formState) {
                 if (formState == null) {
                     return;
                 }
@@ -70,18 +61,24 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        signupViewModel.getSignupResult().observe(this, new Observer<SignUpResult>() {
+        signupViewModel.getSignupResult().observe(this, new Observer<SignupResult>() {
             @Override
-            public void onChanged(@Nullable SignUpResult signupResult) {
+            public void onChanged(@Nullable SignupResult signupResult) {
                 loadingProgressBar.setVisibility(View.GONE);
 
-                if (signupResult == null)
+                Log.v(TAG, String.format("-> getSignupResult"));
+
+                if (signupResult == null) {
+                    Log.v(TAG, String.format("-> getSignupResult NULL"));
                     return;
+                }
 
                 if (signupResult.isSuccess()) {
+                    Log.v(TAG, String.format("-> getSignupResult SUCCESS"));
                     updateUiWithUser(signupResult.getSuccess());
                     setResult(Activity.RESULT_OK);
                 } else {
+                    Log.v(TAG, String.format("-> getSignupResult ERROR"));
                     showLoginFailed(signupResult.getError());
                 }
 
@@ -123,7 +120,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUiWithUser(SignUpUser model) {
+    private void updateUiWithUser(SignupUser model) {
         String welcome = String.format("%s: %s",
                 getString(R.string.welcome),
                 model.getEmail());

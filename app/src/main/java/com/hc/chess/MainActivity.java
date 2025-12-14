@@ -1,4 +1,5 @@
 package com.hc.chess;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,14 +18,14 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.hc.chess.databinding.ActivityMainBinding;
-import com.hc.chess.signup.SignUpActivity;
+import com.hc.chess.signup.SignupActivity;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private ActivityMainBinding binding;
-    private ActivityResultLauncher<Intent> settingsLauncher;
-    private ProgressBar loadingProgressBar;
     private MainViewModel mainViewModel;
+    private ActivityResultLauncher<Intent> settingsLauncher;
+    private ActivityMainBinding binding;
+    private ProgressBar loadingProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +43,16 @@ public class MainActivity extends AppCompatActivity {
 
         loadingProgressBar = binding.loading;
 
+        mainViewModel = new ViewModelProvider(this, new MainViewModelFactory(this))
+                .get(MainViewModel.class);
+
         settingsLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 this::handleActivityResult
         );
 
         binding.buttonSignUp.setOnClickListener(v -> {
-            Intent intent = new Intent(this, SignUpActivity.class);
+            Intent intent = new Intent(this, SignupActivity.class);
             settingsLauncher.launch(intent);
         });
     }
@@ -56,7 +60,5 @@ public class MainActivity extends AppCompatActivity {
     private void handleActivityResult (ActivityResult result) {
         Log.d(TAG, "handleActivityResult: " + result);
         loadingProgressBar.setVisibility(View.GONE);
-        mainViewModel = new ViewModelProvider(this, new MainViewModelFactory(this))
-                .get(MainViewModel.class);
     }
 }
