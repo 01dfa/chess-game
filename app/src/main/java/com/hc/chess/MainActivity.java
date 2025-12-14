@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.hc.chess.databinding.ActivityMainBinding;
 import com.hc.chess.signup.SignUpActivity;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private ActivityResultLauncher<Intent> settingsLauncher;
     private ProgressBar loadingProgressBar;
+    private MainViewModel mainViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,5 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private void handleActivityResult (ActivityResult result) {
         Log.d(TAG, "handleActivityResult: " + result);
         loadingProgressBar.setVisibility(View.GONE);
+        mainViewModel = new ViewModelProvider(this, new MainViewModelFactory(this))
+                .get(MainViewModel.class);
     }
 }
