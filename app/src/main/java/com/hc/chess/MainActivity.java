@@ -1,17 +1,28 @@
 package com.hc.chess;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.hc.chess.databinding.ActivityMainBinding;
+import com.hc.chess.signup.SignUpActivity;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private ActivityMainBinding binding;
+    private ActivityResultLauncher<Intent> settingsLauncher;
+    private ProgressBar loadingProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,5 +37,22 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        loadingProgressBar = binding.loading;
+
+        settingsLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                this::handleActivityResult
+        );
+
+        binding.buttonSignUp.setOnClickListener(v -> {
+            Intent intent = new Intent(this, SignUpActivity.class);
+            settingsLauncher.launch(intent);
+        });
+    }
+
+    private void handleActivityResult (ActivityResult result) {
+        Log.d(TAG, "handleActivityResult: " + result);
+        loadingProgressBar.setVisibility(View.GONE);
     }
 }
