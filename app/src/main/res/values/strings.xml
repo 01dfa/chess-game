@@ -11,5 +11,7 @@
     <string name="action_sign_out">Sign out</string>
     <string name="action_play">Play</string>
 
-    <string name="sign_up_failed">"Register failed"</string>
+    <string name="sign_up_failed">"Failed to sign up"</string>
+    <string name="sign_in_failed">Failed to sign in</string>
+    <string name="title_activity_sign_in">SignInActivity</string>
 </resources>

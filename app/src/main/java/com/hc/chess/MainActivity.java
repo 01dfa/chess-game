@@ -18,6 +18,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.hc.chess.databinding.ActivityMainBinding;
+import com.hc.chess.model.SignInResult;
+import com.hc.chess.signin.SignInActivity;
 import com.hc.chess.signup.SignupActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSignOutSuccessButtonVisibility();
 
         loadingProgressBar = binding.loading;
 
@@ -51,14 +54,49 @@ public class MainActivity extends AppCompatActivity {
                 this::handleActivityResult
         );
 
+        binding.buttonSignIn.setOnClickListener(v -> {
+            loadingProgressBar.setVisibility(View.VISIBLE);
+            Intent intent = new Intent(this, SignInActivity.class);
+            settingsLauncher.launch(intent);
+        });
+
         binding.buttonSignUp.setOnClickListener(v -> {
             Intent intent = new Intent(this, SignupActivity.class);
             settingsLauncher.launch(intent);
         });
     }
 
+    private void setSignInSuccessButtonVisibility () {
+        binding.buttonSignOut.setVisibility(View.VISIBLE);
+        binding.buttonSignIn.setVisibility(View.INVISIBLE);
+        binding.buttonSignUp.setVisibility(View.INVISIBLE);
+        binding.buttonPlay.setVisibility(View.VISIBLE);
+    }
+
+    private void setSignOutSuccessButtonVisibility () {
+        binding.buttonSignOut.setVisibility(View.INVISIBLE);
+        binding.buttonSignIn.setVisibility(View.VISIBLE);
+        binding.buttonSignUp.setVisibility(View.VISIBLE);
+        binding.buttonPlay.setVisibility(View.INVISIBLE);
+    }
+
     private void handleActivityResult (ActivityResult result) {
         Log.d(TAG, "handleActivityResult: " + result);
         loadingProgressBar.setVisibility(View.GONE);
+
+        if (result.getResultCode() == Activity.RESULT_OK
+                && result.getData() != null) {
+            Intent data = result.getData();
+
+            SignInResult signinResult = data
+                    .getParcelableExtra(IntentResult.SIGN_IN.name());
+
+            if (signinResult != null && signinResult.isSuccess()) {
+                String name = signinResult.getUserName();
+                binding.textviewPrincipal.setText(name);
+
+                setSignInSuccessButtonVisibility();
+            }
+        }
     }
 }

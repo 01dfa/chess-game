@@ -8,6 +8,8 @@
         </intent>
     </queries>
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -17,6 +19,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Chess">
+        <activity
+            android:name=".signin.SignInActivity"
+            android:exported="false"
+            android:label="@string/title_activity_sign_in"
+            tools:ignore="AppLinkUrlError">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="auth" />
+                <data android:host="game" />
+                <data android:pathPrefix="/callback" />
+                <data android:scheme="auth" />
+                <data android:host="game" />
+                <data android:pathPrefix="/logout_callback" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".signup.SignupActivity"
             android:exported="false" />

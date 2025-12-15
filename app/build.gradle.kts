@@ -14,6 +14,17 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "OAUTH_CLIENT_ID", properties["OAUTH_CLIENT_ID"] as String)
+        buildConfigField("String", "OAUTH_CLIENT_SECRET", properties["OAUTH_CLIENT_SECRET"] as String)
+        buildConfigField("String", "OAUTH_AUTHORIZATION_ENDPOINT", properties["OAUTH_AUTHORIZATION_ENDPOINT"] as String)
+        buildConfigField("String", "OAUTH_TOKEN_ENDPOINT", properties["OAUTH_TOKEN_ENDPOINT"] as String)
+        buildConfigField("String", "OAUTH_LOGOUT_ENDPOINT", properties["OAUTH_LOGOUT_ENDPOINT"] as String)
+        buildConfigField("String", "OAUTH_PLAYER_INFO_ENDPOINT", properties["OAUTH_PLAYER_INFO_ENDPOINT"] as String)
+        buildConfigField("String", "OAUTH_REDIRECT_SCHEME", properties["OAUTH_REDIRECT_SCHEME"] as String)
+        buildConfigField("String", "OAUTH_REDIRECT_URI", properties["OAUTH_REDIRECT_URI"] as String)
+        buildConfigField("String", "OAUTH_LOGOUT_REDIRECT_URI", properties["OAUTH_LOGOUT_REDIRECT_URI"] as String)
+
         buildConfigField("String", "SIGN_UP_CLIENT_ID", properties["SIGN_UP_CLIENT_ID"] as String)
         buildConfigField("String", "SIGN_UP_CLIENT_SECRET", properties["SIGN_UP_CLIENT_SECRET"] as String)
         buildConfigField("String", "SIGN_UP_TOKEN_ENDPOINT", properties["SIGN_UP_TOKEN_ENDPOINT"] as String)
