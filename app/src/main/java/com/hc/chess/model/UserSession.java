@@ -1,26 +1,26 @@
 package com.hc.chess.model;
 
-public class LoggedInUser {
-    private static volatile LoggedInUser instance;
+public class UserSession {
+    private static volatile UserSession instance;
     private String userId;
     private String displayName;
     private String token;
 
-    private LoggedInUser(String userId, String displayName, String token) {
+    private UserSession(String userId, String displayName, String token) {
         this.userId = userId;
         this.displayName = displayName;
         this.token = token;
     }
 
-    public static LoggedInUser createInstance(String userId, String displayName, String token) {
+    public static UserSession createInstance(String userId, String displayName, String token) {
         if(instance == null) {
-            instance = new LoggedInUser(userId, displayName, token);
+            instance = new UserSession(userId, displayName, token);
         }
 
         return instance;
     }
 
-    public static LoggedInUser getInstance() {
+    public static UserSession getInstance() {
         return instance;
     }
 

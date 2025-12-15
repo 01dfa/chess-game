@@ -5,28 +5,29 @@ import android.net.Uri;
 import com.hc.chess.IntentWrapper;
 import com.hc.chess.datasource.Result;
 import com.hc.chess.datasource.LoginDataSource;
-import com.hc.chess.model.LoggedInUser;
+import com.hc.chess.model.UserSession;
 
 public class SessionRepository {
     private static volatile SessionRepository instance;
     private final LoginDataSource dataSource;
-    private LoggedInUser user;
+    private UserSession session;
     private SessionRepository(LoginDataSource dataSource) {
         this.dataSource = dataSource;
-        user = null;
+        session = null;
     }
 
     public static SessionRepository getInstance(LoginDataSource dataSource) {
         if (instance == null) {
             instance = new SessionRepository(dataSource);
         }
+
         return instance;
     }
 
-    public boolean isLoggedIn() { return user != null; }
+    public boolean isActiveSession() { return session != null; }
 
     public void launchLogout(IntentWrapper intentWrapper) {
-        this.user.clear();
+        this.session.clear();
         intentWrapper.launch(dataSource.getLogoutUri(), dataSource.getRedirectScheme());
     }
 
@@ -36,17 +37,17 @@ public class SessionRepository {
                 dataSource.getRedirectScheme());
     }
 
-    private void setLoggedInUser(LoggedInUser user) {
-        this.user = user;
+    private void setSession(UserSession user) {
+        this.session = user;
     }
 
-    public Result<LoggedInUser> login(Uri uri) {
-        Result<LoggedInUser> result = dataSource.login(uri);
+    public Result<UserSession> login(Uri uri) {
+        Result<UserSession> session = dataSource.login(uri);
 
-        if (Result.isSuccess(result)) {
-            setLoggedInUser(result.getData());
+        if (Result.isSuccess(session)) {
+            setSession(session.getData());
         }
 
-        return result;
+        return session;
     }
 }

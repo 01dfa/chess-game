@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.hc.chess.AuthorizationHeaderType;
 import com.hc.chess.ContentType;
-import com.hc.chess.model.LoggedInUser;
+import com.hc.chess.model.UserSession;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -108,9 +108,9 @@ public class LoginDataSource {
         }
     }
 
-    public Result<LoggedInUser> login(Uri uri) {
+    public Result<UserSession> login(Uri uri) {
         try {
-            LoggedInUser user = this.authFlow(uri);
+            UserSession user = this.authFlow(uri);
 
             return new Result.Success<>(user);
         } catch (Exception e) {
@@ -156,7 +156,7 @@ public class LoginDataSource {
         }
     }
 
-    public LoggedInUser authFlow(Uri uri) throws JSONException, IOException {
+    public UserSession authFlow(Uri uri) throws JSONException, IOException {
         String code = uri.getQueryParameter("code");
 
         String tokenResult = HttpRequest.post(this.TOKEN_ENDPOINT,
@@ -184,7 +184,7 @@ public class LoginDataSource {
 
         JSONObject jsonPlayerResult = new JSONObject(playerInfoResult);
 
-        return LoggedInUser.createInstance(
+        return UserSession.createInstance(
                 jsonPlayerResult.getString("id"),
                 jsonPlayerResult.getString("name"),
                 this.currentAccessToken);
