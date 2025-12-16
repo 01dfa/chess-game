@@ -66,19 +66,14 @@ public class SignupActivity extends AppCompatActivity {
             public void onChanged(@Nullable SignupResult signupResult) {
                 loadingProgressBar.setVisibility(View.GONE);
 
-                Log.v(TAG, String.format("-> getSignupResult"));
-
                 if (signupResult == null) {
-                    Log.v(TAG, String.format("-> getSignupResult NULL"));
                     return;
                 }
 
                 if (signupResult.isSuccess()) {
-                    Log.v(TAG, String.format("-> getSignupResult SUCCESS"));
                     updateUiWithUser(signupResult.getSuccess());
                     setResult(Activity.RESULT_OK);
                 } else {
-                    Log.v(TAG, String.format("-> getSignupResult ERROR"));
                     showLoginFailed(signupResult.getError());
                 }
 

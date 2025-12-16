@@ -41,7 +41,7 @@ public class MainViewModel extends ViewModel {
     private void handleSignOutResult(AuthTabIntent.AuthResult result) {
         if(result.resultUri != null
                 && result.resultUri.toString().contains("logout_callback")) {
-            this.signOutResult.setValue("sign_out_finish");
+            this.signOutResult.setValue(MainState.SIGN_OUT_FINISH.name());
         }
     }
 }

@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.hc.chess.databinding.ActivityMainBinding;
@@ -54,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
                 this::handleActivityResult
         );
 
+        binding.buttonSignOut.setOnClickListener(v -> {
+            loadingProgressBar.setVisibility(View.VISIBLE);
+            mainViewModel.signOut();
+        });
+
         binding.buttonSignIn.setOnClickListener(v -> {
             loadingProgressBar.setVisibility(View.VISIBLE);
             Intent intent = new Intent(this, SignInActivity.class);
@@ -63,6 +69,18 @@ public class MainActivity extends AppCompatActivity {
         binding.buttonSignUp.setOnClickListener(v -> {
             Intent intent = new Intent(this, SignupActivity.class);
             settingsLauncher.launch(intent);
+        });
+
+        this.mainViewModel.getSignOutResult().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if(s.equals(MainState.SIGN_OUT_FINISH.name())) {
+                    setSignOutSuccessButtonVisibility();
+                    binding.textviewPrincipal.setText(R.string.welcome);
+                }
+
+                loadingProgressBar.setVisibility(View.GONE);
+            }
         });
     }
 
