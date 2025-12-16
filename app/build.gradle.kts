@@ -31,6 +31,7 @@ android {
         buildConfigField("String", "SIGN_UP_ENDPOINT", properties["SIGN_UP_ENDPOINT"] as String)
         buildConfigField("String", "SIGN_UP_O_AUTH_TYPE_KEY", properties["SIGN_UP_O_AUTH_TYPE_KEY"] as String)
         buildConfigField("String", "SIGN_UP_O_AUTH_TYPE_VALUE", properties["SIGN_UP_O_AUTH_TYPE_VALUE"] as String)
+        buildConfigField("String", "PIECE_MOVEMENT_ENDPOINT", properties["PIECE_MOVEMENT_ENDPOINT"] as String)
     }
 
     buildTypes {
@@ -60,7 +61,18 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.browser)
     implementation(libs.okhttp)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.activity.compose)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.ui)
+    implementation(libs.ui.graphics)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.ui.test.junit4)
+    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
 }

@@ -19,6 +19,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.hc.chess.databinding.ActivityMainBinding;
+import com.hc.chess.game.GameActivity;
 import com.hc.chess.model.SignInResult;
 import com.hc.chess.signin.SignInActivity;
 import com.hc.chess.signup.SignupActivity;
@@ -68,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
 
         binding.buttonSignUp.setOnClickListener(v -> {
             Intent intent = new Intent(this, SignupActivity.class);
+            settingsLauncher.launch(intent);
+        });
+
+        binding.buttonPlay.setOnClickListener(v -> {
+            Intent intent = new Intent(this, GameActivity.class);
             settingsLauncher.launch(intent);
         });
 
