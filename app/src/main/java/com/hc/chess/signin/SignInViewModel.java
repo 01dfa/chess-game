@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.activity.result.ActivityResultCaller;
 import androidx.activity.result.ActivityResultLauncher;
@@ -53,7 +54,12 @@ public class SignInViewModel extends ViewModel {
     }
 
     public void launchAuthorize() {
-        sessionRepository.launchAuthorize(this.intentWrapper);
+        try {
+            sessionRepository.launchAuthorize(this.intentWrapper);
+        } catch (Exception ex) {
+            Log.e(TAG, String.format("%s", ex.getMessage()));
+            signinResult.postValue(new SignInResult(R.string.sign_in_failed));
+        }
     }
 
     private void handleAuthResult(AuthTabIntent.AuthResult result) {

@@ -11,46 +11,46 @@ import androidx.lifecycle.ViewModel;
 
 import com.hc.chess.R;
 import com.hc.chess.datasource.Result;
-import com.hc.chess.model.SignupResult;
-import com.hc.chess.model.SignupUser;
-import com.hc.chess.repository.SignupRepository;
+import com.hc.chess.model.SignUpResult;
+import com.hc.chess.model.SignUpUser;
+import com.hc.chess.repository.SignUpRepository;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class SignupViewModel extends ViewModel {
+public class SignUpViewModel extends ViewModel {
     private static final String TAG = "SignUpViewModel";
-    private MutableLiveData<SignupFormState> signupFormState = new MutableLiveData<>();
-    private MutableLiveData<SignupResult> signupResult = new MutableLiveData<>();
-    private SignupRepository signupRepository;
+    private MutableLiveData<SignUpFormState> signupFormState = new MutableLiveData<>();
+    private MutableLiveData<SignUpResult> signupResult = new MutableLiveData<>();
+    private SignUpRepository signupRepository;
     private final Handler mainThreadHandler;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    SignupViewModel(SignupRepository signupRepository) {
+    SignUpViewModel(SignUpRepository signupRepository) {
         this.signupRepository = signupRepository;
         mainThreadHandler = new Handler(Looper.getMainLooper());
     }
 
-    LiveData<SignupFormState> getSignupFormState() {
+    LiveData<SignUpFormState> getSignupFormState() {
         return signupFormState;
     }
 
-    LiveData<SignupResult> getSignupResult() {
+    LiveData<SignUpResult> getSignupResult() {
         return signupResult;
     }
 
     public void register(String email, String password) {
         executor.execute(() -> {
-            Result<SignupUser> result = signupRepository.register(email, password);
+            Result<SignUpUser> result = signupRepository.register(email, password);
             if (Result.isSuccess(result)) {
-                SignupUser data = result.getData();
+                SignUpUser data = result.getData();
                 mainThreadHandler.post(() ->
-                        signupResult.postValue(new SignupResult(data)));
+                        signupResult.postValue(new SignUpResult(data)));
                 executor.shutdown();
             } else {
                 Log.e(TAG, ((Result.Error)result).toString());
                 mainThreadHandler.post(() ->
-                        signupResult.postValue(new SignupResult(R.string.sign_up_failed)));
+                        signupResult.postValue(new SignUpResult(R.string.sign_up_failed)));
                 executor.shutdownNow();
             }
         });
@@ -58,11 +58,11 @@ public class SignupViewModel extends ViewModel {
 
     public void loginDataChanged(String email, String password) {
         if (!isEmailValid(email)) {
-            signupFormState.setValue(new SignupFormState(R.string.invalid_email, null));
+            signupFormState.setValue(new SignUpFormState(R.string.invalid_email, null));
         } else if (!isPasswordValid(password)) {
-            signupFormState.setValue(new SignupFormState(null, R.string.invalid_password));
+            signupFormState.setValue(new SignUpFormState(null, R.string.invalid_password));
         } else {
-            signupFormState.setValue(new SignupFormState());
+            signupFormState.setValue(new SignUpFormState());
         }
     }
 

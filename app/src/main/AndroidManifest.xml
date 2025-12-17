@@ -45,7 +45,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".signup.SignupActivity"
+            android:name=".signup.SignUpActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

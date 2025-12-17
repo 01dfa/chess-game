@@ -22,7 +22,7 @@ import com.hc.chess.databinding.ActivityMainBinding;
 import com.hc.chess.game.GameActivity;
 import com.hc.chess.model.SignInResult;
 import com.hc.chess.signin.SignInActivity;
-import com.hc.chess.signup.SignupActivity;
+import com.hc.chess.signup.SignUpActivity;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.buttonSignUp.setOnClickListener(v -> {
-            Intent intent = new Intent(this, SignupActivity.class);
+            Intent intent = new Intent(this, SignUpActivity.class);
             settingsLauncher.launch(intent);
         });
 

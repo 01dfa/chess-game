@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,12 +18,12 @@ import androidx.lifecycle.ViewModelProvider;
 import com.hc.chess.R;
 
 import com.hc.chess.databinding.ActivitySignUpBinding;
-import com.hc.chess.model.SignupResult;
-import com.hc.chess.model.SignupUser;
+import com.hc.chess.model.SignUpResult;
+import com.hc.chess.model.SignUpUser;
 
-public class SignupActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
-    private SignupViewModel signupViewModel;
+    private SignUpViewModel signupViewModel;
     private ActivitySignUpBinding binding;
 
     @Override
@@ -34,17 +33,17 @@ public class SignupActivity extends AppCompatActivity {
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        signupViewModel = new ViewModelProvider(this, new SignupViewModelFactory())
-                .get(SignupViewModel.class);
+        signupViewModel = new ViewModelProvider(this, new SignUpViewModelFactory())
+                .get(SignUpViewModel.class);
 
         final EditText emailEditText = binding.email;
         final EditText passwordEditText = binding.password;
         final Button registerButton = binding.register;
         final ProgressBar loadingProgressBar = binding.loading;
 
-        signupViewModel.getSignupFormState().observe(this, new Observer<SignupFormState>() {
+        signupViewModel.getSignupFormState().observe(this, new Observer<SignUpFormState>() {
             @Override
-            public void onChanged(@Nullable SignupFormState formState) {
+            public void onChanged(@Nullable SignUpFormState formState) {
                 if (formState == null) {
                     return;
                 }
@@ -61,9 +60,9 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-        signupViewModel.getSignupResult().observe(this, new Observer<SignupResult>() {
+        signupViewModel.getSignupResult().observe(this, new Observer<SignUpResult>() {
             @Override
-            public void onChanged(@Nullable SignupResult signupResult) {
+            public void onChanged(@Nullable SignUpResult signupResult) {
                 loadingProgressBar.setVisibility(View.GONE);
 
                 if (signupResult == null) {
@@ -71,10 +70,10 @@ public class SignupActivity extends AppCompatActivity {
                 }
 
                 if (signupResult.isSuccess()) {
-                    updateUiWithUser(signupResult.getSuccess());
+                    showRegisterSuccess(signupResult.getSuccess());
                     setResult(Activity.RESULT_OK);
                 } else {
-                    showLoginFailed(signupResult.getError());
+                    showRegisterFailed(signupResult.getError());
                 }
 
                 finish();
@@ -115,7 +114,7 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUiWithUser(SignupUser model) {
+    private void showRegisterSuccess(SignUpUser model) {
         String welcome = String.format("%s: %s",
                 getString(R.string.welcome),
                 model.getEmail());
@@ -123,8 +122,7 @@ public class SignupActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
-    private void showLoginFailed(Integer error) {
-        Log.v(TAG, String.format("-> getSignupResult ERROR: %s", error));
+    private void showRegisterFailed(Integer error) {
         Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
     }
 }

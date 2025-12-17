@@ -1,4 +1,4 @@
-package com.hc.chess;
+package com.hc.chess.datasource;
 
 public enum ContentType {
     JSON_TYPE,

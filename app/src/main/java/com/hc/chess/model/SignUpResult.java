@@ -1,18 +1,18 @@
 package com.hc.chess.model;
 
-public class SignupResult {
-    private SignupUser success;
+public class SignUpResult {
+    private SignUpUser success;
     private Integer error;
 
-    public SignupResult(Integer error) { this.error = error; }
+    public SignUpResult(Integer error) { this.error = error; }
 
-    public SignupResult(SignupUser success) {
+    public SignUpResult(SignUpUser success) {
         this.success = success;
     }
 
     public boolean isSuccess() { return this.success != null && this.error == null; }
 
-    public SignupUser getSuccess() {
+    public SignUpUser getSuccess() {
         return success;
     }
 

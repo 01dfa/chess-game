@@ -2,18 +2,18 @@ package com.hc.chess.signup;
 
 import androidx.annotation.Nullable;
 
-public class SignupFormState {
+public class SignUpFormState {
     @Nullable
     private Integer emailError;
     @Nullable
     private Integer passwordError;
 
-    SignupFormState(@Nullable Integer emailError, @Nullable Integer passwordError) {
+    SignUpFormState(@Nullable Integer emailError, @Nullable Integer passwordError) {
         this.emailError = emailError;
         this.passwordError = passwordError;
     }
 
-    SignupFormState() {
+    SignUpFormState() {
         this.emailError = null;
         this.passwordError = null;
     }

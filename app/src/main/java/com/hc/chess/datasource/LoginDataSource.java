@@ -3,8 +3,6 @@ package com.hc.chess.datasource;
 import android.net.Uri;
 import android.util.Log;
 
-import com.hc.chess.AuthorizationHeaderType;
-import com.hc.chess.ContentType;
 import com.hc.chess.model.UserSession;
 
 import org.json.JSONException;

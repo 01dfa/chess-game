@@ -1,8 +1,8 @@
 package com.hc.chess.game.event;
 
-import com.hc.chess.AuthorizationHeaderType;
+import com.hc.chess.datasource.AuthorizationHeaderType;
 import com.hc.chess.BuildConfig;
-import com.hc.chess.ContentType;
+import com.hc.chess.datasource.ContentType;
 import com.hc.chess.datasource.HttpRequest;
 import com.hc.chess.model.UserSession;
 
