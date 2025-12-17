@@ -31,7 +31,6 @@ public class LoginDataSource {
     private String currentIdToken;
 
     private LoginDataSource(Builder builder) {
-        Log.i(TAG, "PRIVATE LoginDataSource");
         this.CLIENT_ID = builder.clientId;
         this.CLIENT_SECRET = builder.clientSecret;
         this.AUTHORIZATION_ENDPOINT = builder.authorizationEndpoint;
