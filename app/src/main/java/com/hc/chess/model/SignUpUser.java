@@ -1,9 +1,9 @@
 package com.hc.chess.model;
 
-public class SignupUser {
+public class SignUpUser {
     private final String email;
 
-    public SignupUser(String email) {
+    public SignUpUser(String email) {
         this.email = email;
     }
     public String getEmail() { return email; }

@@ -2,9 +2,6 @@ package com.hc.chess.datasource;
 
 import android.util.Log;
 
-import com.hc.chess.AuthorizationHeaderType;
-import com.hc.chess.ContentType;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
