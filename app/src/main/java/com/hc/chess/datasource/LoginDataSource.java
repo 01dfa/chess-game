@@ -1,7 +1,6 @@
 package com.hc.chess.datasource;
 
 import android.net.Uri;
-import android.util.Log;
 
 import com.hc.chess.model.UserSession;
 
@@ -29,10 +28,14 @@ public class LoginDataSource {
     private final String PLAYER_INFO_ENDPOINT;
     private String currentAccessToken;
     private String currentIdToken;
+    private final String GRANT_TYPE;
+    private final String GRANT_TYPE_PARAMETER_NAME;
 
     private LoginDataSource(Builder builder) {
         this.CLIENT_ID = builder.clientId;
         this.CLIENT_SECRET = builder.clientSecret;
+        this.GRANT_TYPE = builder.grantType;
+        this.GRANT_TYPE_PARAMETER_NAME = builder.grantTypeParameterName;
         this.AUTHORIZATION_ENDPOINT = builder.authorizationEndpoint;
         this.TOKEN_ENDPOINT = builder.tokenEndpoint;
         this.LOGOUT_ENDPOINT = builder.logoutEndpoint;
@@ -44,9 +47,22 @@ public class LoginDataSource {
         this.currentIdToken = "";
     }
 
+    public boolean isOauthRedirectURI(Uri uri) {
+        return uri != null &&
+                uri.toString().startsWith(String.format("%s%s",
+                        REDIRECT_URI,
+                        "?"+ GRANT_TYPE_PARAMETER_NAME +"="));
+    }
+
+    public boolean isLogoutRedirectURI(Uri uri) {
+        return uri != null && this.LOGOUT_REDIRECT_URI.equals(uri.toString());
+    }
+
     public static class Builder {
         private String clientId;
         private String clientSecret;
+        private String grantType;
+        private String grantTypeParameterName;
         private String authorizationEndpoint;
         private String tokenEndpoint;
         private String logoutEndpoint;
@@ -62,6 +78,16 @@ public class LoginDataSource {
 
         public Builder clientSecret(String clientSecret) {
             this.clientSecret = clientSecret;
+            return this;
+        }
+
+        public Builder grantType(String grantType) {
+            this.grantType = grantType;
+            return this;
+        }
+
+        public Builder grantTypeParameterName(String grantTypeParameterName) {
+            this.grantTypeParameterName = grantTypeParameterName;
             return this;
         }
 
@@ -122,7 +148,7 @@ public class LoginDataSource {
 
         Uri uri = Uri.parse(this.AUTHORIZATION_ENDPOINT)
                 .buildUpon()
-                .appendQueryParameter("response_type", "code")
+                .appendQueryParameter("response_type", this.GRANT_TYPE_PARAMETER_NAME)
                 .appendQueryParameter("client_id", this.CLIENT_ID)
                 .appendQueryParameter("scope", "openid")
                 //.appendQueryParameter("state", state)
@@ -154,7 +180,7 @@ public class LoginDataSource {
     }
 
     public UserSession authFlow(Uri uri) throws JSONException, IOException {
-        String code = uri.getQueryParameter("code");
+        String grantTypeValue = uri.getQueryParameter(this.GRANT_TYPE_PARAMETER_NAME);
 
         String tokenResult = HttpRequest.post(this.TOKEN_ENDPOINT,
                 AuthorizationHeaderType.BASIC,
@@ -163,8 +189,8 @@ public class LoginDataSource {
                 Map.of(
                         "client_id", this.CLIENT_ID,
                         "redirect_uri", this.REDIRECT_URI,
-                        "grant_type", "authorization_code",
-                        "code", code,
+                        "grant_type", GRANT_TYPE,
+                        this.GRANT_TYPE_PARAMETER_NAME, grantTypeValue,
                         "code_verifier", this.codeVerifier
                 ));
 
@@ -188,13 +214,11 @@ public class LoginDataSource {
     }
 
     public Uri getLogoutUri() {
-        Uri uri = Uri.parse(this.LOGOUT_ENDPOINT)
+        return Uri.parse(this.LOGOUT_ENDPOINT)
                 .buildUpon()
                 .appendQueryParameter("id_token_hint", this.currentIdToken)
                 .appendQueryParameter("client_id", this.CLIENT_ID)
                 .appendQueryParameter("post_logout_redirect_uri", this.LOGOUT_REDIRECT_URI)
                 .build();
-
-        return uri;
     }
 }

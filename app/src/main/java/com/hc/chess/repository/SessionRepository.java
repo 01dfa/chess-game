@@ -37,6 +37,14 @@ public class SessionRepository {
                 dataSource.getRedirectScheme());
     }
 
+    public boolean isOauthRedirectURI(Uri uri) {
+        return dataSource.isOauthRedirectURI(uri);
+    }
+
+    public boolean isLogoutRedirectURI(Uri uri) {
+        return dataSource.isLogoutRedirectURI(uri);
+    }
+
     private void setSession(UserSession user) {
         this.session = user;
     }

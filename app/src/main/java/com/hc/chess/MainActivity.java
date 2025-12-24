@@ -77,10 +77,10 @@ public class MainActivity extends AppCompatActivity {
             settingsLauncher.launch(intent);
         });
 
-        this.mainViewModel.getSignOutResult().observe(this, new Observer<String>() {
+        this.mainViewModel.getSignOutResult().observe(this, new Observer<MainState>() {
             @Override
-            public void onChanged(String s) {
-                if(s.equals(MainState.SIGN_OUT_FINISH.name())) {
+            public void onChanged(MainState mainState) {
+                if(mainState == MainState.SIGN_OUT_FINISH) {
                     setSignOutSuccessButtonVisibility();
                     binding.textviewPrincipal.setText(R.string.welcome);
                 }
