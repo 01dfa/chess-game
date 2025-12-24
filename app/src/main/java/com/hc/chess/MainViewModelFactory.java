@@ -25,6 +25,8 @@ public class MainViewModelFactory implements ViewModelProvider.Factory {
             LoginDataSource loginDataSource = new LoginDataSource.Builder()
                     .clientId(BuildConfig.OAUTH_CLIENT_ID)
                     .clientSecret(BuildConfig.OAUTH_CLIENT_SECRET)
+                    .grantType(BuildConfig.OAUTH_GRANT_TYPE)
+                    .grantTypeParameterName(BuildConfig.OAUTH_GRANT_TYPE_PARAMETER_NAME)
                     .authorizationEndpoint(BuildConfig.OAUTH_AUTHORIZATION_ENDPOINT)
                     .tokenEndpoint(BuildConfig.OAUTH_TOKEN_ENDPOINT)
                     .logoutEndpoint(BuildConfig.OAUTH_LOGOUT_ENDPOINT)

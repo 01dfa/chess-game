@@ -13,8 +13,7 @@ import androidx.lifecycle.ViewModel;
 import com.hc.chess.repository.SessionRepository;
 
 public class MainViewModel extends ViewModel {
-    private static final String TAG = "MainViewModel";
-    private MutableLiveData<String> signOutResult = new MutableLiveData<>();
+    private MutableLiveData<MainState> signOutResult = new MutableLiveData<>();
     private SessionRepository sessionRepository;
     private IntentWrapper intentWrapper;
     private ActivityResultLauncher<Intent> launcher;
@@ -29,7 +28,7 @@ public class MainViewModel extends ViewModel {
         this.sessionRepository = sessionRepository;
     }
 
-    public LiveData<String> getSignOutResult() {
+    public LiveData<MainState> getSignOutResult() {
         return signOutResult;
     }
 
@@ -39,9 +38,8 @@ public class MainViewModel extends ViewModel {
     }
 
     private void handleSignOutResult(AuthTabIntent.AuthResult result) {
-        if(result.resultUri != null
-                && result.resultUri.toString().contains("logout_callback")) {
-            this.signOutResult.setValue(MainState.SIGN_OUT_FINISH.name());
+        if(this.sessionRepository.isLogoutRedirectURI(result.resultUri)) {
+            this.signOutResult.setValue(MainState.SIGN_OUT_FINISH);
         }
     }
 }

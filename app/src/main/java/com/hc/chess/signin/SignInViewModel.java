@@ -68,7 +68,7 @@ public class SignInViewModel extends ViewModel {
         }
 
         if (result.resultCode == AuthTabIntent.RESULT_OK
-                && result.resultUri.toString().contains("callback")) {
+                && this.sessionRepository.isOauthRedirectURI(result.resultUri)) {
             this.login(result.resultUri);
         }
     }
